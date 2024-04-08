@@ -40,5 +40,20 @@ class Return(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     reason = models.TextField()
 
+class Inventory(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    rawMaterial = models.ForeignKey(RawMaterial, on_delete=models.CASCADE)
+    inventoryCount = models.IntegerField()
 
+class Supplier(models.Model):
+    rawMaterial = models.ForeignKey(RawMaterial, on_delete=models.CASCADE)
+    name = models.CharField(max_length=75)
+    email = models.EmailField()
+    phoneNumber = models.CharField(max_length=15)
+    address = models.CharField(max_length=75)
 
+class CustomerReview(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    rating = models.CharField(max_length=2)
+    date = models.DateField(auto_now_add=True)
+    
