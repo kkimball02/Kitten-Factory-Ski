@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from django.views import View
 from rest_framework import generics
-from .models import Product, Employee, Customer, Order, Return, RawMaterial
-from .serializers import ProductSerializer, EmployeeSerializer, CustomerSerializer, OrderSerializer, ReturnSerializer, RawMaterialSerializer
+from .models import Product, Employee, Customer, Order, Return, RawMaterial, Inventory, Supplier, CustomerReview, SalesReport
+from .serializers import ProductSerializer, EmployeeSerializer, CustomerSerializer, OrderSerializer 
+from .serializers import ReturnSerializer, RawMaterialSerializer, InventorySerializer, SupplierSerializer
+from .serializers import CustomerReviewSerializer, SalesReportSerializer
 
 class Login(View):
-    template_name = 'login.html'
+    template_name = 'login.html', 
     
     def get(self, request):
         return render(request, self.template_name)
@@ -64,3 +66,35 @@ class RawMaterialListCreateAPIView(generics.ListCreateAPIView):
 class RawMaterialRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = RawMaterial.objects.all()
     serializer_class = RawMaterialSerializer
+
+class InventoryListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Inventory.objects.all()
+    serializer_class = InventorySerializer
+
+class InventoryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Inventory.objects.all()
+    serializer_class = InventorySerializer
+
+class SupplierListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Supplier.objects.all()
+    serializer_class = SupplierSerializer
+
+class SupplierRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Supplier.objects.all()
+    serializer_class = SupplierSerializer
+
+class CustomerReviewListCreateAPIView(generics.ListCreateAPIView):
+    queryset = CustomerReview.objects.all()
+    serializer_class = SupplierSerializer
+
+class CustomerReviewRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = CustomerReview.objects.all()
+    serializer_class = CustomerReviewSerializer
+
+class SalesReportListCreateAPIView(generics.ListCreateAPIView):
+    queryset = SalesReport.objects.all()
+    serializer_class = SalesReportSerializer
+
+class SalesReportRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+     queryset = SalesReport.objects.all()
+     serializer_class = SalesReportSerializer

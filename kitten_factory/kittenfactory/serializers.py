@@ -12,6 +12,7 @@ from .models import CustomerReview
 from .models import Payment
 from .models import SalesReport
 
+
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
@@ -78,7 +79,11 @@ class SalesReportSerializer(serializers.ModelSerializer):
     most_popular_product = serializers.SerializerMethodField()
     least_popular_product = serializers.SerializerMethodField()
 
-def get_most_popular_product(self, obj):
-    return obj.most_popular_product().name if obj.most_popular_product() else None
-def get_least_popular_product(self, obj):
-    return obj.least_popular_product().name if obj.least_popular_product() else None
+    def get_most_popular_product(self, obj):
+        return obj.most_popular_product().name if obj.most_popular_product() else None
+    def get_least_popular_product(self, obj):
+        return obj.least_popular_product().name if obj.least_popular_product() else None
+    
+    class Meta:
+        model = SalesReport
+        fields = ['id', 'start_date', 'end_date', 'most_popular_product', 'least_popular_product']
