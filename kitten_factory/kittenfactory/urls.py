@@ -6,7 +6,7 @@ from .views import OrderListCreateAPIView, OrderRetrieveUpdateDestroyAPIView, Re
 from .views import RawMaterialListCreateAPIView, RawMaterialRetrieveUpdateDestroyAPIView, InventoryListCreateAPIView, InventoryRetrieveUpdateDestroyAPIView
 from .views import SupplierListCreateAPIView, SupplierRetrieveUpdateDestroyAPIView, CustomerReviewListCreateAPIView, CustomerReviewRetrieveUpdateDestroyAPIView
 from .views import SalesReportListCreateAPIView, SalesReportRetrieveUpdateDestroyAPIView
-
+from . import views 
 
 
 
@@ -33,7 +33,6 @@ urlpatterns = [
     path('review/<int:pk>/', CustomerReviewRetrieveUpdateDestroyAPIView.as_view(), name='review-detail'),
     path('report/', SalesReportListCreateAPIView.as_view(), name='report-list'),
     path('report/<int:pk>', SalesReportRetrieveUpdateDestroyAPIView.as_view(), name='report-details')
-    
-
+    path('', views.home, name='home'), 
 
 ]
