@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page - Kitten Factory</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Kitten Factory</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="{% url 'product-list' %}">Products</a></li>
+            <li><a href="{% url 'about' %}">About Us</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="{% url 'signup' %}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            <li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="jumbotron">
+        <h1>Welcome to Kitten Factory!</h1>
+        <p>Your one-stop destination for top-quality custom skis. Explore our range of park, powder, and touring skis designed for every terrain.</p>
+        <p><a class="btn btn-primary btn-lg" href="{% url 'product-list' %}" role="button">Browse Products</a></p>
+    </div>
+
+    <div class="row">
+        <h2>Featured Products</h2>
+
+        <div class="col-sm-4">
+            <div class="thumbnail">
+                <img src="{% static 'images/product1.jpg' %}" alt="Product 1">
+                <div class="caption">
+                    <h3>Product 1</h3>
+                    <p>Description for product 1...</p>
+                    <p><a href="#" class="btn btn-primary" role="button">View Details</a></p>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p class="text-muted">© Kitten Factory 2024</p>
+    </div>
+</footer>
+
+</body>
+</html>

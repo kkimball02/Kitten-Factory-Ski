@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import Max, Min
+from django.contrib.auth.models import User
 
 # Create your models here.
 # models.py
@@ -56,4 +58,26 @@ class CustomerReview(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     rating = models.CharField(max_length=2)
     date = models.DateField(auto_now_add=True)
-    
+
+class Payment(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    expirationDate = models.DateField(auto_now_add=True)
+    status = models.CharField(max_length=25)
+
+class SalesReport(models.Model):
+    start_date = models.DateField()
+    end_date = models.DateField()
+    total_sales = models.DecimalField(max_digits=12, decimal_places=2)
+    number_of_orders = models.PositiveIntegerField()
+    number_of_products_sold = models.PositiveIntegerField()
+    def most_popular_product(self):
+            return Product.objects.filter(order__date__range=(self.start_date, self.end_date)).annotate(
+                max_sold=Max('quantity_sold')).order_by('-max_sold').first()
+    def least_popular_product(self):
+            return Product.objects.filter(order__date__range=(self.start_date, self.end_date)).annotate(
+                min_sold=Min('quantity_sold')).order_by('min_sold').first()
+
+
+
+
+
