@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from rest_framework import generics
 from .models import Product, Employee, Customer, Order, Return, RawMaterial, Inventory, Supplier, CustomerReview, SalesReport
 from .serializers import ProductSerializer, EmployeeSerializer, CustomerSerializer, OrderSerializer 
 from .serializers import ReturnSerializer, RawMaterialSerializer, InventorySerializer, SupplierSerializer
 from .serializers import CustomerReviewSerializer, SalesReportSerializer
-
+from django.http import HttpResponse
 
 
 class Home(View):
@@ -15,22 +15,34 @@ class Home(View):
         
         return render(request, self.template_name)
     
-    def about_view(self, request):
+
+    def about_view(request):
         
-        return render(request, 'kittenfactory/about.html')
+        return render(request,'about.html')
     
-    def contact_view(self, request):
+    def contact_view(request):
         
-        return render(request, 'kittenfactory/contact.html')
+        return render(request, 'contact.html')
     
-    def signup_view(self, request):
+    def contact_submit(request):
+        if request.method == 'POST': #Check if the request method is POST.
+        # Process your form data here
+            name = request.POST.get('name') #If it is, retrieve the values of the 'name', 'email', and 'message' fields from the request's POST data.
+            email = request.POST.get('email')
+            message = request.POST.get('message')
+            return HttpResponse("Thank you for your submission!")
+        else:
+            return HttpResponse("Invalid request", status=400)
 
-        return render(request, 'kittenfactory/signup.html')
+    def signup_view(request):
+
+        return render(request, 'signup.html')
     
-    def login_view(self, request):
+    def login_view(request):
 
-        return render(request, 'kittenfactory/login.html')
-
+        return render(request, 'login.html')
+    
+    
 class Product_List(View):
     
     template_name = 'product_list.html'

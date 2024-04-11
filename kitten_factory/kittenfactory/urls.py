@@ -6,12 +6,12 @@ from .views import OrderListCreateAPIView, OrderRetrieveUpdateDestroyAPIView, Re
 from .views import RawMaterialListCreateAPIView, RawMaterialRetrieveUpdateDestroyAPIView, InventoryListCreateAPIView, InventoryRetrieveUpdateDestroyAPIView
 from .views import SupplierListCreateAPIView, SupplierRetrieveUpdateDestroyAPIView, CustomerReviewListCreateAPIView, CustomerReviewRetrieveUpdateDestroyAPIView
 from .views import SalesReportListCreateAPIView, SalesReportRetrieveUpdateDestroyAPIView
-
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('home/', Home.as_view(), name='home.html'),
+    path('', Home.as_view(), name='home'),
     path('product/', ProductListCreateAPIView.as_view(), name='product'),
-    path('products/<int:pk>/', ProductRetrieveUpdateDestroyAPIView.as_view(), name='product-detail'),
+    path('product/<int:pk>/', ProductRetrieveUpdateDestroyAPIView.as_view(), name='product-detail'),
     path('employee/', EmployeeListCreateAPIView.as_view(), name='employee-list'),
     path('employee/<int:pk>/', EmployeeRetrieveUpdateDestroyAPIView.as_view(), name='employee-detail'),
     path('customer/', CustomerListCreateAPIView.as_view(), name='customer-list'),
@@ -34,8 +34,10 @@ urlpatterns = [
     path('contact/', views.Home.contact_view, name='contact'),
     path('signup/',  views.Home.signup_view, name='signup'),
     path('login/', views.Home.login_view, name='login'),
-    path('products/', views.Product_List.as_view(), name='product_list')
+    path('products/', views.Product_List.as_view(), name='product_list'),
+    path('contact/submit/', Home.contact_submit, name='contact_submit'),
+]
     
 
 
-]
+

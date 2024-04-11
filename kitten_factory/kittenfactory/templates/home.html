@@ -17,7 +17,7 @@
         </div>
         <ul class="nav navbar-nav">
             <li class="active"><a href="#">Home</a></li>
-            <li><a href="{% url 'product-list' %}">Products</a></li>
+            <li><a href="{% url 'product_list' %}">Products</a></li>
             <li><a href="{% url 'about' %}">About Us</a></li>
             <li><a href="{% url 'contact' %}">Contact</a></li>
         </ul>
@@ -32,7 +32,7 @@
     <div class="jumbotron">
         <h1>Welcome to Kitten Factory!</h1>
         <p>Your one-stop destination for top-quality custom skis. Explore our range of park, powder, and touring skis designed for every terrain.</p>
-        <p><a class="btn btn-primary btn-lg" href="{% url 'product-list' %}" role="button">Browse Products</a></p>
+        <p><a class="btn btn-primary btn-lg" href="{% url 'product_list' %}" role="button">Browse Products</a></p>
     </div>
 
     <div class="row">
@@ -40,11 +40,11 @@
 
         <div class="col-sm-4">
             <div class="thumbnail">
-                <img src="{% static 'images/product1.jpg' %}" alt="Product 1">
+                <img src="https://www.powder.com/.image/t_share/MTk2MzczNzY3NTE2ODU4MzA3/soty_rossignol_rallybird.jpg" alt="Thunderski2000">
                 <div class="caption">
-                    <h3>Product 1</h3>
-                    <p>Description for product 1...</p>
-                    <p><a href="#" class="btn btn-primary" role="button">View Details</a></p>
+                    <h3>Thunderski2000</h3>
+                    <p>All-mountain skis suitable for intermediate skiers</p>
+                    <p><a href="{% url 'product_list' %}" class="btn btn-primary" role="button">View Details</a></p>
                 </div>
             </div>
         </div>
