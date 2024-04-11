@@ -10,7 +10,7 @@
 
 <div class="container">
     <h1>Contact Us</h1>
-    <form action="{% url 'contact_submit' %}" method="post">
+    <form action="{% url 'contact-submit' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
             <label for="name">Name:</label>

@@ -42,7 +42,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     <td>${product.description}</td>
                     <td>${product.price}</td>
                     <td>${product.makeup}</td>
-                    <td><a href="/kittenfactory/product/${product.id}/">Update or Delete</a></td> `;//The innerHTML of the row is set using a template literal, which includes the product's attributes and links for updating or deleting the product.
+                    <td><a href="/kittenfactory/product/${product.id}/">Update or Delete</a><td> 
+                    <td><a href="/kittenfactory/make_payment/">Buy Product</a></td>`;//The innerHTML of the row is set using a template literal, which includes the product's attributes and links for updating or deleting the product.
                 productRows.appendChild(row); //The row is appended to the table body element with the id 'productRows'.
             });
         })

@@ -5,10 +5,7 @@ from .models import Customer
 from .models import Employee
 from .models import RawMaterial
 from .models import Order
-from .models import Return
-from .models import Inventory
-from .models import Supplier
-from .models import CustomerReview
+from .models import CustomerReturn
 from .models import Payment
 from .models import SalesReport
 
@@ -42,27 +39,9 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ReturnSerializer(serializers.ModelSerializer):
+class CustomerReturnSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Return
-        fields = '__all__'
-
-
-class InventorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Inventory
-        fields = '__all__'
-
-
-class SupplierSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Supplier
-        fields = '__all__'
-
-
-class CustomerReviewSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomerReview
+        model = CustomerReturn
         fields = '__all__'
 
 

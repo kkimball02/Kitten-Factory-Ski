@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from rest_framework import generics
-from .models import Product, Employee, Customer, Order, Return, RawMaterial, Inventory, Supplier, CustomerReview, SalesReport
+from rest_framework import generics, viewsets
+from .models import Product, Employee, Customer, Order, CustomerReturn, RawMaterial, SalesReport, Payment
 from .serializers import ProductSerializer, EmployeeSerializer, CustomerSerializer, OrderSerializer 
-from .serializers import ReturnSerializer, RawMaterialSerializer, InventorySerializer, SupplierSerializer
-from .serializers import CustomerReviewSerializer, SalesReportSerializer
+from .serializers import CustomerReturnSerializer, RawMaterialSerializer
+from .serializers import SalesReportSerializer, PaymentSerializer
 from django.http import HttpResponse
+from .forms import CustomerReturnForm
+
 
 
 class Home(View):
@@ -52,8 +54,7 @@ class Product_List(View):
         return render(request, self.template_name)
 
 
-    
-    
+
 
 
 class ProductListCreateAPIView(generics.ListCreateAPIView):
@@ -89,12 +90,30 @@ class OrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = OrderSerializer
 
 class ReturnListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Return.objects.all()
-    serializer_class = ReturnSerializer
+    queryset = CustomerReturn.objects.all()
+    serializer_class = CustomerReturnSerializer
+
+def submit_customer_return(request):
+    if request.method == 'POST':
+        form = CustomerReturnForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home') 
+    else:
+        form = CustomerReturnForm()
+    return render(request, 'returns.html', {'form': form})  
+    
+class PaymentCreateAPIView(generics.CreateAPIView):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
+
+def make_payment(request):
+    return render(request, 'make_payment.html')
+
 
 class ReturnRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Return.objects.all()
-    serializer_class = ReturnSerializer
+    queryset = CustomerReturn.objects.all()
+    serializer_class = CustomerReturnSerializer
 
 class RawMaterialListCreateAPIView(generics.ListCreateAPIView):
     queryset = RawMaterial.objects.all()
@@ -104,29 +123,6 @@ class RawMaterialRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIV
     queryset = RawMaterial.objects.all()
     serializer_class = RawMaterialSerializer
 
-class InventoryListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Inventory.objects.all()
-    serializer_class = InventorySerializer
-
-class InventoryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Inventory.objects.all()
-    serializer_class = InventorySerializer
-
-class SupplierListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Supplier.objects.all()
-    serializer_class = SupplierSerializer
-
-class SupplierRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Supplier.objects.all()
-    serializer_class = SupplierSerializer
-
-class CustomerReviewListCreateAPIView(generics.ListCreateAPIView):
-    queryset = CustomerReview.objects.all()
-    serializer_class = SupplierSerializer
-
-class CustomerReviewRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = CustomerReview.objects.all()
-    serializer_class = CustomerReviewSerializer
 
 class SalesReportListCreateAPIView(generics.ListCreateAPIView):
     queryset = SalesReport.objects.all()
