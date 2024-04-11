@@ -6,18 +6,43 @@ from .serializers import ProductSerializer, EmployeeSerializer, CustomerSerializ
 from .serializers import ReturnSerializer, RawMaterialSerializer, InventorySerializer, SupplierSerializer
 from .serializers import CustomerReviewSerializer, SalesReportSerializer
 
-class Login(View):
-    template_name = 'login.html', 
-    
-    def get(self, request):
-        return render(request, self.template_name)
+
 
 class Home(View):
     template_name = 'home.html'
     
     def get(self, request):
         
-        return render(request, self.template_name,)
+        return render(request, self.template_name)
+    
+    def about_view(self, request):
+        
+        return render(request, 'kittenfactory/about.html')
+    
+    def contact_view(self, request):
+        
+        return render(request, 'kittenfactory/contact.html')
+    
+    def signup_view(self, request):
+
+        return render(request, 'kittenfactory/signup.html')
+    
+    def login_view(self, request):
+
+        return render(request, 'kittenfactory/login.html')
+
+class Product_List(View):
+    
+    template_name = 'product_list.html'
+   
+    def get(self, request):
+
+        return render(request, self.template_name)
+
+
+    
+    
+
 
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
