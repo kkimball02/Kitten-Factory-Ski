@@ -21,41 +21,30 @@
             </tr>
         </thead>
         <tbody id='productRows'>
-            {% for product in products %}
-                <tr>
-                    <td>{{ product.name }}</td>
-                    <td>{{ product.description }}</td>
-                    <td>{{ product.price }}</td>
-                    <td>{{ product.makeup }}</td>
-                    <td>
-                        <a href="{% url 'product_detail' product.id %}" class="btn btn-info">View</a>
-                        <a href="{% url 'edit_product' product.id %}" class="btn btn-primary">Edit</a>
-                        <a href="{% url 'delete_product' product.id %}" class="btn btn-danger">Delete</a>
-                    </td>
-                </tr>
-            {% endfor %}
+            
         </tbody>
     </table>
+    <a href = "{% url 'product' %}"> Create and View Products</a>
+    
 </div>
 </body>
         <script>
+            //The function is executed when the DOM content is loaded.
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('/kittenfactory/product/')  // Adjust the API endpoint as needed
-        .then(response => response.json())
+    fetch('/kittenfactory/product/') //GET request to the '/kittenfactory/product/' endpoint using the fetch() function.
+        .then(response => response.json())//The response is converted to JSON using the response.json() method.
         .then(data => {
             const productRows = document.getElementById('productRows');
-            data.forEach(product => {
-                const row = document.createElement('tr');
+            data.forEach(product => {//The fetched data is iterated over using the forEach() method
+                const row = document.createElement('tr');//For each product, a new table row (tr element) is created
                 row.innerHTML = `
                     <td>${product.name}</td>
                     <td>${product.description}</td>
                     <td>${product.price}</td>
                     <td>${product.makeup}</td>
-                    
-                        
-                        
-                `;
-                productRows.appendChild(row);
+                    <td><a href="/kittenfactory/product/${product.id}/">Update or Delete</a><td> 
+                    <td><a href="/kittenfactory/make_payment/">Buy Product</a></td>`;//The innerHTML of the row is set using a template literal, which includes the product's attributes and links for updating or deleting the product.
+                productRows.appendChild(row); //The row is appended to the table body element with the id 'productRows'.
             });
         })
         .catch(error => console.error('Error fetching products:', error));

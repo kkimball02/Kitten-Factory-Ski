@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Employee, Customer, Product, Order, Return, RawMaterial, Inventory, Supplier, CustomerReview, Payment, SalesReport
+from .models import Employee, Customer, Product, Order, CustomerReturn, RawMaterial, Payment, SalesReport
 
 # Register your models here.
 
@@ -7,11 +7,8 @@ admin.site.register(Employee)
 admin.site.register(Customer)
 admin.site.register(Product)
 admin.site.register(Order)
-admin.site.register(Return)
+admin.site.register(CustomerReturn)
 admin.site.register(RawMaterial)
-admin.site.register(Inventory)
-admin.site.register(Supplier)
-admin.site.register(CustomerReview)
 admin.site.register(Payment)
 admin.site.register(SalesReport)
 
@@ -52,20 +49,12 @@ class RawMaterialAdmin(admin.ModelAdmin):
     list_filter = ('type',)
 
 
-class InventoryAdmin(admin.ModelAdmin):
-    list_display = ('product', 'rawMaterial', 'inventoryCount')
-    list_filter = ('product', 'rawMaterial')
-
 
 class SupplierAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'phoneNumber', 'address')
     search_fields = ('name', 'email')
     list_filter = ('name',)
 
-
-class CustomerReviewAdmin(admin.ModelAdmin):
-    list_display = ('customer', 'rating', 'date')
-    list_filter = ('rating', 'date')
 
 
 class PaymentAdmin(admin.ModelAdmin):

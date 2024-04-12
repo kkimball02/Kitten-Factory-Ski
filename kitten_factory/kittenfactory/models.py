@@ -37,33 +37,24 @@ class Order(models.Model):
     status = models.CharField(max_length=25)
     date = models.DateField(auto_now_add=True)
 
-class Return(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+class CustomerReturn(models.Model):
+    customer_name = models.CharField(max_length=100)
+    product_name = models.CharField(max_length=100)
     reason = models.TextField()
 
-class Inventory(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    rawMaterial = models.ForeignKey(RawMaterial, on_delete=models.CASCADE)
-    inventoryCount = models.IntegerField()
+    def __str__(self):
+        return f"{self.customer_name} - {self.product_name}"
 
-class Supplier(models.Model):
-    rawMaterial = models.ForeignKey(RawMaterial, on_delete=models.CASCADE)
-    name = models.CharField(max_length=75)
-    email = models.EmailField()
-    phoneNumber = models.CharField(max_length=15)
-    address = models.CharField(max_length=75)
 
-class CustomerReview(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    rating = models.CharField(max_length=2)
-    date = models.DateField(auto_now_add=True)
 
 class Payment(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    expirationDate = models.DateField(auto_now_add=True)
-    status = models.CharField(max_length=25)
+     amount = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+     description = models.CharField(max_length=255, null=True)
+     created_at = models.DateField(auto_now_add=True, null=True)
+     def __str__(self):
+            return f"Payment of ${self.amount} for {self.description}"
 
+    
 class SalesReport(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
