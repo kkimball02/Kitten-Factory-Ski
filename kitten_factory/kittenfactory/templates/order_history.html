@@ -6,7 +6,9 @@
             <li>{{ order.product.name }} - Quantity: {{ order.quantity }} on {{ order.date }}</li>
         {% endfor %}
     </ul>
+    <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>  
 {% else %}
     <p>You have no order history.</p>
+    <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a> 
 {% endif %}
 {% endblock %}
