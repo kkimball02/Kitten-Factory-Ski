@@ -1,17 +1,19 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from rest_framework import generics, viewsets
+from rest_framework import generics
 from .models import Product, Employee, Customer, Order, CustomerReturn, RawMaterial, SalesReport
 from .serializers import ProductSerializer, EmployeeSerializer, CustomerSerializer, OrderSerializer 
 from .serializers import CustomerReturnSerializer, RawMaterialSerializer
 from .serializers import SalesReportSerializer
 from django.http import HttpResponse
-from .forms import CustomerReturnForm
+from .forms import CustomerReturnForm, OrderForm
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.decorators import login_required
+import requests
+from django.contrib import messages
 
 
 def register(request):
@@ -60,13 +62,7 @@ class Home(View):
         return render(request, 'login.html')
     
     
-class Product_List(View):
-    
-    template_name = 'product_list.html'
-   
-    def get(self, request):
 
-        return render(request, self.template_name)
 
 
 
@@ -75,14 +71,17 @@ class Product_List(View):
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticated]
+    
+def product_list(request):
+    response = requests.get('http://127.0.0.1:8000/kittenfactory/api/products/')  # Update with the actual API URL
+    products = response.json() if response.status_code == 200 else []
+    return render(request, 'product_list.html', {'products': products})
 
 
 class ProductRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticated]
-
 
 class EmployeeListCreateAPIView(generics.ListCreateAPIView):
     queryset = Employee.objects.all()
@@ -108,12 +107,50 @@ class OrderListCreateAPIView(generics.ListCreateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
+
+@login_required
+def delete_order(request, order_id):
+    order = get_object_or_404(Order, id=order_id, customer=request.user.customer)
+    
+    if request.method == 'POST':
+        order.delete()
+        messages.success(request, "Order deleted successfully.")
+        return redirect('order_history')
+    return render(request, 'confirm_delete.html', {'order': order})
 @login_required
 def order_history_view(request):
-    # Fetch orders for the logged-in user
-    customer = request.user.customer
-    orders = Order.objects.filter(customer=customer).order_by('-date')
+    if not request.user.is_authenticated:
+        return redirect('login_url')  # Ensure the user is redirected if not logged in
+
+    try:
+        # Assuming Order has a foreign key to Customer which in turn is linked to User
+        orders = Order.objects.filter(customer__user=request.user).order_by('-date')
+        return render(request, 'order_history.html', {'orders': orders})
+    except Order.DoesNotExist:
+        orders = None
     return render(request, 'order_history.html', {'orders': orders})
+
+def order_product_view(request):
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            order = form.save(commit=False)
+            try:
+                customer_profile = Customer.objects.get(user=request.user)
+                order.customer = customer_profile
+                order.save()
+                return redirect('order_history')
+            except Customer.DoesNotExist:
+                # Handle the case where the user does not have a customer profile
+                # Possible response: redirect to a profile creation page, or display an error
+                return render(request, 'error.html', {'message': 'No customer profile found.'})
+            
+              # Redirect to the order history page or a confirmation page
+    else:
+        form = OrderForm()
+
+    return render(request, 'order_form.html', {'form': form})
+
 
 class OrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Order.objects.all()

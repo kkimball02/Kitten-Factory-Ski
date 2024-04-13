@@ -40,9 +40,9 @@ class RawMaterial(models.Model):
     quantityOnHand = models.IntegerField()
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, blank= True, default=True)
-    quantity = models.IntegerField(blank=True, default=True)
-    date = models.DateField(blank=True, default=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    date = models.DateField(auto_now_add=True)
     price = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
 
 class CustomerReturn(models.Model):
