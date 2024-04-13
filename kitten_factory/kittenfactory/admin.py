@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Employee, Customer, Product, Order, CustomerReturn, RawMaterial, Payment, SalesReport
+from .models import Employee, Customer, Product, Order, CustomerReturn, RawMaterial, SalesReport
 
 # Register your models here.
 
@@ -9,7 +9,6 @@ admin.site.register(Product)
 admin.site.register(Order)
 admin.site.register(CustomerReturn)
 admin.site.register(RawMaterial)
-admin.site.register(Payment)
 admin.site.register(SalesReport)
 
 
@@ -55,11 +54,6 @@ class SupplierAdmin(admin.ModelAdmin):
     search_fields = ('name', 'email')
     list_filter = ('name',)
 
-
-
-class PaymentAdmin(admin.ModelAdmin):
-    list_display = ('customer', 'expirationDate', 'status')
-    list_filter = ('status', 'expirationDate')
 
 
 class SalesReportAdmin(admin.ModelAdmin):

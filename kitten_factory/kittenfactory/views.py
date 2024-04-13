@@ -1,14 +1,29 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from rest_framework import generics, viewsets
-from .models import Product, Employee, Customer, Order, CustomerReturn, RawMaterial, SalesReport, Payment
+from .models import Product, Employee, Customer, Order, CustomerReturn, RawMaterial, SalesReport
 from .serializers import ProductSerializer, EmployeeSerializer, CustomerSerializer, OrderSerializer 
 from .serializers import CustomerReturnSerializer, RawMaterialSerializer
-from .serializers import SalesReportSerializer, PaymentSerializer
+from .serializers import SalesReportSerializer
 from django.http import HttpResponse
 from .forms import CustomerReturnForm
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse_lazy
+from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.decorators import login_required
 
 
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('home')  # Redirect to a homepage or dashboard
+    else:
+        form = UserCreationForm()
+    return render(request, 'signup.html', {'form': form})
 
 class Home(View):
     template_name = 'home.html'
@@ -60,39 +75,55 @@ class Product_List(View):
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    
+    permission_classes = [IsAuthenticated]
+
+
 class ProductRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    permission_classes = [IsAuthenticated]
+
 
 class EmployeeListCreateAPIView(generics.ListCreateAPIView):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
+    permission_classes = [IsAuthenticated]
 
 class EmployeeRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
+    permission_classes = [IsAuthenticated]
 
 class CustomerListCreateAPIView(generics.ListCreateAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
+    permission_classes = [IsAuthenticated]
 
 class CustomerRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
+    permission_classes = [IsAuthenticated]
 
 class OrderListCreateAPIView(generics.ListCreateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
+@login_required
+def order_history_view(request):
+    # Fetch orders for the logged-in user
+    customer = request.user.customer
+    orders = Order.objects.filter(customer=customer).order_by('-date')
+    return render(request, 'order_history.html', {'orders': orders})
 
 class OrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-
+    permission_classes = [IsAuthenticated]
 class ReturnListCreateAPIView(generics.ListCreateAPIView):
     queryset = CustomerReturn.objects.all()
     serializer_class = CustomerReturnSerializer
-
+    permission_classes = [IsAuthenticated]
+@login_required
 def submit_customer_return(request):
     if request.method == 'POST':
         form = CustomerReturnForm(request.POST)
@@ -103,31 +134,29 @@ def submit_customer_return(request):
         form = CustomerReturnForm()
     return render(request, 'returns.html', {'form': form})  
     
-class PaymentCreateAPIView(generics.CreateAPIView):
-    queryset = Payment.objects.all()
-    serializer_class = PaymentSerializer
-
-def make_payment(request):
-    return render(request, 'make_payment.html')
 
 
 class ReturnRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = CustomerReturn.objects.all()
     serializer_class = CustomerReturnSerializer
+    permission_classes = [IsAuthenticated]
 
 class RawMaterialListCreateAPIView(generics.ListCreateAPIView):
     queryset = RawMaterial.objects.all()
     serializer_class = RawMaterialSerializer
+    permission_classes = [IsAuthenticated]
 
 class RawMaterialRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = RawMaterial.objects.all()
     serializer_class = RawMaterialSerializer
-
+    permission_classes = [IsAuthenticated]
 
 class SalesReportListCreateAPIView(generics.ListCreateAPIView):
     queryset = SalesReport.objects.all()
     serializer_class = SalesReportSerializer
+    permission_classes = [IsAuthenticated]
 
 class SalesReportRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
      queryset = SalesReport.objects.all()
      serializer_class = SalesReportSerializer
+     permission_classes = [IsAuthenticated]

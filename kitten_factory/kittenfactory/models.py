@@ -13,7 +13,10 @@ class Product(models.Model):
     makeup = models.CharField(max_length = 50)
     size = models.IntegerField()
 
+    
+
 class Employee(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='employee', null=True)
     firstName = models.CharField(max_length=50)
     lastName = models.CharField(max_length=50)
     email = models.EmailField()
@@ -22,20 +25,25 @@ class Employee(models.Model):
     position = models.CharField(max_length= 75)
 
 class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='customer', null=True)
     firstName = models.CharField(max_length=50)
     lastName = models.CharField(max_length=50)
     email = models.EmailField()
     phoneNumber = models.CharField(max_length=15)
-    address = models.CharField(max_length=75, blank=True, null=True)
+    address = models.CharField(max_length=75, null=True)
+
+    def __str__(self):
+        return self.user.username
 
 class RawMaterial(models.Model):
     type = models.CharField(max_length=50)
     quantityOnHand = models.IntegerField()
-
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    status = models.CharField(max_length=25)
-    date = models.DateField(auto_now_add=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, blank= True, default=True)
+    quantity = models.IntegerField(blank=True, default=True)
+    date = models.DateField(blank=True, default=True)
+    price = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
 
 class CustomerReturn(models.Model):
     customer_name = models.CharField(max_length=100)
@@ -45,14 +53,6 @@ class CustomerReturn(models.Model):
     def __str__(self):
         return f"{self.customer_name} - {self.product_name}"
 
-
-
-class Payment(models.Model):
-     amount = models.DecimalField(max_digits=10, decimal_places=2, null=True)
-     description = models.CharField(max_length=255, null=True)
-     created_at = models.DateField(auto_now_add=True, null=True)
-     def __str__(self):
-            return f"Payment of ${self.amount} for {self.description}"
 
     
 class SalesReport(models.Model):

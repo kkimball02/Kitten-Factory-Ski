@@ -6,7 +6,6 @@ from .models import Employee
 from .models import RawMaterial
 from .models import Order
 from .models import CustomerReturn
-from .models import Payment
 from .models import SalesReport
 
 
@@ -45,14 +44,7 @@ class CustomerReturnSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class PaymentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Payment
-        fields = '__all__'
 
-class Meta:
-    model = SalesReport
-    fields = '__all__'
 
 class SalesReportSerializer(serializers.ModelSerializer):
     most_popular_product = serializers.SerializerMethodField()
