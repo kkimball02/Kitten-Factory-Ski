@@ -1,7 +1,7 @@
 # forms.py
 
 from django import forms
-from .models import CustomerReturn, Order, Product
+from .models import CustomerReturn, Order, Product, Payment
 
 class CustomerReturnForm(forms.ModelForm):
     class Meta:
@@ -16,3 +16,7 @@ class OrderForm(forms.ModelForm):
         model = Order
         fields = ['product', 'quantity']
 
+class PaymentForm(forms.ModelForm):
+    class Meta:
+        model = Payment
+        fields = '__all__'

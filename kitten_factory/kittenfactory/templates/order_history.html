@@ -4,6 +4,7 @@
     <ul>
         {% for order in orders %}
             <li>{{ order.product.name }} - Quantity: {{ order.quantity }} on {{ order.date }}</li>
+            <li> <a href="{% url 'order-detail' pk=order.pk %}">Update/Delete Order</a>
         {% endfor %}
     </ul>
 {% else %}
