@@ -4,18 +4,12 @@
     <ul>
         {% for order in orders %}
             <li>{{ order.product.name }} - Quantity: {{ order.quantity }} on {{ order.date }}</li>
-<<<<<<< HEAD
-=======
             <li> <a href="{% url 'order-detail' pk=order.pk %}">Update/Delete Order</a>
->>>>>>> 337d5fd9a61a73e0160f514376ea7aeb6f1adb5d
         {% endfor %}
     </ul>
     <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>  
 {% else %}
     <p>You have no order history.</p>
-<<<<<<< HEAD
-=======
     <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a> 
->>>>>>> 337d5fd9a61a73e0160f514376ea7aeb6f1adb5d
 {% endif %}
 {% endblock %}

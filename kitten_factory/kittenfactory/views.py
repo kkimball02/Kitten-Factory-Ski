@@ -6,23 +6,15 @@ from .serializers import ProductSerializer, EmployeeSerializer, CustomerSerializ
 from .serializers import CustomerReturnSerializer, RawMaterialSerializer
 from .serializers import SalesReportSerializer
 from django.http import HttpResponse
-<<<<<<< HEAD
-from .forms import CustomerReturnForm, OrderForm
-=======
 from .forms import CustomerReturnForm, OrderForm, PaymentForm
->>>>>>> 337d5fd9a61a73e0160f514376ea7aeb6f1adb5d
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.decorators import login_required
 import requests
-<<<<<<< HEAD
-from django.contrib import messages
-=======
 from django.views.generic import UpdateView
 from django.urls import reverse_lazy
 
->>>>>>> 337d5fd9a61a73e0160f514376ea7aeb6f1adb5d
 
 
 def register(request):
@@ -117,17 +109,6 @@ class OrderListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
 
-<<<<<<< HEAD
-@login_required
-def delete_order(request, order_id):
-    order = get_object_or_404(Order, id=order_id, customer=request.user.customer)
-    
-    if request.method == 'POST':
-        order.delete()
-        messages.success(request, "Order deleted successfully.")
-        return redirect('order_history')
-    return render(request, 'confirm_delete.html', {'order': order})
-=======
 def order_detail_view(request, pk):
     try:
         # Ensure the order exists and belongs to the user
@@ -141,7 +122,6 @@ def order_detail_view(request, pk):
 
 
 
->>>>>>> 337d5fd9a61a73e0160f514376ea7aeb6f1adb5d
 @login_required
 def order_history_view(request):
     if not request.user.is_authenticated:
@@ -176,9 +156,6 @@ def order_product_view(request):
 
     return render(request, 'order_form.html', {'form': form})
 
-<<<<<<< HEAD
-
-=======
 class OrderUpdateDeleteView(UpdateView):
     model = Order
     form_class = OrderForm
@@ -194,7 +171,6 @@ class OrderUpdateDeleteView(UpdateView):
     def delete_order(self):
         self.object.delete()
         return redirect('order_history')
->>>>>>> 337d5fd9a61a73e0160f514376ea7aeb6f1adb5d
 class OrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
