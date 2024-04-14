@@ -1,13 +1,12 @@
-<!-- order_history.html -->
 {% block content %}
-<h2>Order History</h2>
+<h1>Order History</h1>
 {% if orders %}
     <ul>
         {% for order in orders %}
-            <li>Order ID: {{ order.id }} - Order Date: {{ order.order_date|date:"Y-m-d" }} - Status: {{ order.status }}</li>
+            <li>{{ order.product.name }} - Quantity: {{ order.quantity }} on {{ order.date }}</li>
         {% endfor %}
     </ul>
 {% else %}
-    <p>You have no orders yet.</p>
+    <p>You have no order history.</p>
 {% endif %}
 {% endblock %}

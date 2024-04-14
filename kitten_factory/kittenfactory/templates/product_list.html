@@ -1,15 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Listing - Kitten Factory</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-</head>
-<body>
 
-<div class="container">
-    <h1>Product Listing</h1>
+<h1>Product Listing</h1>
+{% if products %}
     <table class="table">
         <thead>
             <tr>
@@ -17,42 +8,20 @@
                 <th>Description</th>
                 <th>Price</th>
                 <th>Makeup</th>
-                <th>Actions</th>
             </tr>
         </thead>
-        <tbody id='productRows'>
-            
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.description }}</td>
+                <td>${{ product.price }}</td>
+                <td>{{ product.makeup }}</td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
-    <a href = "{% url 'product' %}"> Create and View Products</a>
-    
-</div>
-</body>
-        <script>
-            //The function is executed when the DOM content is loaded.
-document.addEventListener('DOMContentLoaded', function() {
-    fetch('/kittenfactory/product/') //GET request to the '/kittenfactory/product/' endpoint using the fetch() function.
-        .then(response => response.json())//The response is converted to JSON using the response.json() method.
-        .then(data => {
-            const productRows = document.getElementById('productRows');
-            data.forEach(product => {//The fetched data is iterated over using the forEach() method
-                const row = document.createElement('tr');//For each product, a new table row (tr element) is created
-                row.innerHTML = `
-                    <td>${product.name}</td>
-                    <td>${product.description}</td>
-                    <td>${product.price}</td>
-                    <td>${product.makeup}</td>
-                    <td><a href="/kittenfactory/product/${product.id}/">Update or Delete</a><td> 
-                    <td><a href="/kittenfactory//">Buy Product</a></td>`;//The innerHTML of the row is set using a template literal, which includes the product's attributes and links for updating or deleting the product.
-                productRows.appendChild(row); //The row is appended to the table body element with the id 'productRows'.
-            });
-        })
-        .catch(error => console.error('Error fetching products:', error));
-});
-</script>
-                        
-    
-
-
-
-</html>
+    <a href="{% url 'order-form' %}"> Order Products </a>
+{% else %}
+    <p>No products available.</p>
+{% endif %}
