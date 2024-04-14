@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> 337d5fd9a61a73e0160f514376ea7aeb6f1adb5d
 <h1>Product Listing</h1>
 {% if products %}
     <table class="table">
@@ -21,7 +24,21 @@
             {% endfor %}
         </tbody>
     </table>
+<<<<<<< HEAD
     <a href="{% url 'order-form' %}"> Order Products </a>
 {% else %}
     <p>No products available.</p>
+=======
+<<<<<<< HEAD
+    <a href="{% url 'order-form' %}"> Order Products </a>
+    
+=======
+    <a href="{% url 'order-form' %}" class="btn btn-primary">Order Products</a>
+    <br><br> 
+    <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+>>>>>>> 999928c0b413efaa21a0eb4d017fb50c01bd5659
+{% else %}
+    <p>No products available.</p>
+    <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+>>>>>>> 337d5fd9a61a73e0160f514376ea7aeb6f1adb5d
 {% endif %}

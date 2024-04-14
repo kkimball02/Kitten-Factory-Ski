@@ -16,16 +16,18 @@ class Product(models.Model):
     
 
 class Employee(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='employee', null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     firstName = models.CharField(max_length=50)
     lastName = models.CharField(max_length=50)
     email = models.EmailField()
     phoneNumber = models.CharField(max_length=15)
     address = models.CharField(max_length=75)
     position = models.CharField(max_length= 75)
+    def __str__(self):
+         return self.user.username if self.user else 'No User'
 
 class Customer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='customer', null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     firstName = models.CharField(max_length=50)
     lastName = models.CharField(max_length=50)
     email = models.EmailField()
@@ -33,7 +35,7 @@ class Customer(models.Model):
     address = models.CharField(max_length=75, null=True)
 
     def __str__(self):
-        return self.user.username
+        return self.user.username if self.user else 'No User'
 
 class RawMaterial(models.Model):
     type = models.CharField(max_length=50)
@@ -70,5 +72,13 @@ class SalesReport(models.Model):
 
 
 
+class Payment(models.Model):
+    pmt_id = models.AutoField(primary_key=True)
+    date = models.DateField()
+    cust_id = models.ForeignKey('Customer', on_delete=models.CASCADE)
+    credit_card = models.CharField(max_length=19)
+
+    def __str__(self):
+        return f"Payment ID: {self.pmt_id}"
 
 

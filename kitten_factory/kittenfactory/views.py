@@ -6,14 +6,23 @@ from .serializers import ProductSerializer, EmployeeSerializer, CustomerSerializ
 from .serializers import CustomerReturnSerializer, RawMaterialSerializer
 from .serializers import SalesReportSerializer
 from django.http import HttpResponse
+<<<<<<< HEAD
 from .forms import CustomerReturnForm, OrderForm
+=======
+from .forms import CustomerReturnForm, OrderForm, PaymentForm
+>>>>>>> 337d5fd9a61a73e0160f514376ea7aeb6f1adb5d
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse_lazy
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.decorators import login_required
 import requests
+<<<<<<< HEAD
 from django.contrib import messages
+=======
+from django.views.generic import UpdateView
+from django.urls import reverse_lazy
+
+>>>>>>> 337d5fd9a61a73e0160f514376ea7aeb6f1adb5d
 
 
 def register(request):
@@ -108,6 +117,7 @@ class OrderListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
 
+<<<<<<< HEAD
 @login_required
 def delete_order(request, order_id):
     order = get_object_or_404(Order, id=order_id, customer=request.user.customer)
@@ -117,6 +127,21 @@ def delete_order(request, order_id):
         messages.success(request, "Order deleted successfully.")
         return redirect('order_history')
     return render(request, 'confirm_delete.html', {'order': order})
+=======
+def order_detail_view(request, pk):
+    try:
+        # Ensure the order exists and belongs to the user
+        order = Order.objects.get(pk=pk, customer__user=request.user)
+    except Order.DoesNotExist:
+        # If the order does not exist or does not belong to the user, handle the error
+        return HttpResponse('Order not found or access denied.', status=404)
+
+    # Proceed with rendering if the order is valid
+    return render(request, 'delete_order.html', {'order': order})
+
+
+
+>>>>>>> 337d5fd9a61a73e0160f514376ea7aeb6f1adb5d
 @login_required
 def order_history_view(request):
     if not request.user.is_authenticated:
@@ -151,7 +176,25 @@ def order_product_view(request):
 
     return render(request, 'order_form.html', {'form': form})
 
+<<<<<<< HEAD
 
+=======
+class OrderUpdateDeleteView(UpdateView):
+    model = Order
+    form_class = OrderForm
+    template_name = 'order/update_order.html'
+    success_url = reverse_lazy('order-list')
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if "delete" in request.POST:
+            return self.delete_order()
+        return super().post(request, *args, **kwargs)
+
+    def delete_order(self):
+        self.object.delete()
+        return redirect('order_history')
+>>>>>>> 337d5fd9a61a73e0160f514376ea7aeb6f1adb5d
 class OrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
@@ -197,3 +240,16 @@ class SalesReportRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIV
      queryset = SalesReport.objects.all()
      serializer_class = SalesReportSerializer
      permission_classes = [IsAuthenticated]
+
+
+class PaymentAdd(View):
+    def get(self, request):
+        form = PaymentForm()
+        return render(request, 'payment/payment_add.html', {'form': form})
+
+    def post(self, request):
+        form = PaymentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('payment_list')
+        return render(request, 'payment/payment_add.html', {'form': form})

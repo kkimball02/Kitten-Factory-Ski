@@ -3,6 +3,14 @@
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
+<<<<<<< HEAD
     <button type="submit">Place Order</button>
 </form>
 {% endblock %}
+=======
+    <button type="submit" class="btn btn-primary">Place Order</button>
+</form>
+
+<a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+{% endblock %}
+>>>>>>> 337d5fd9a61a73e0160f514376ea7aeb6f1adb5d
