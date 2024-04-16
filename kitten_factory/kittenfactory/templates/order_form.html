@@ -1,10 +1,60 @@
 {% block content %}
-<h2>Order Product</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Place Order</button>
-</form>
+<style>
+    .order-form {
+        background-color: #f4f4f9; /* Very light blue background */
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* Subtle shadow for a soft depth effect */
+        max-width: 500px;
+        margin: 40px auto;
+    }
+    h2 {
+        color: #205081; /* Dark blue for headings */
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    form {
+        margin-bottom: 20px;
+    }
+    .btn-primary {
+        background-color: #337ab7; /* Bootstrap's primary blue */
+        border-color: #2e6da4;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        width: 100%; /* Full-width button for emphasis on action */
+        font-size: 16px;
+        cursor: pointer;
+        display: block; /* Ensure the button spans the full width */
+    }
+    .btn-primary:hover {
+        background-color: #286090; /* Darker blue on hover */
+        border-color: #204d74;
+    }
+    .btn-secondary {
+        background-color: #6c757d; /* Bootstrap secondary gray */
+        border-color: #5a6268;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        margin-top: 10px; /* Spacing from the primary button */
+        display: block; /* Block level to match primary button's full width */
+        width: 100%;
+    }
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        border-color: #545b62;
+    }
+</style>
 
-<a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+<div class="order-form">
+    <h2>Order Product</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Place Order</button>
+    </form>
+
+    <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+</div>
 {% endblock %}

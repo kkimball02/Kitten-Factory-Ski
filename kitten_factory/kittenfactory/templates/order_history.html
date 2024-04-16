@@ -1,15 +1,67 @@
 {% block content %}
-<h1>Order History</h1>
-{% if orders %}
-    <ul>
-        {% for order in orders %}
-            <li>{{ order.product.name }} - Quantity: {{ order.quantity }} on {{ order.date }}</li>
-            <li> <a href="{% url 'order-detail' pk=order.pk %}">Update/Delete Order</a>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>  
-{% else %}
-    <p>You have no order history.</p>
-    <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a> 
-{% endif %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        width: 80%;
+        margin: auto;
+        padding: 20px;
+    }
+    h1 {
+        color: #333;
+        text-align: center;
+    }
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+    li {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        padding: 8px;
+        margin-bottom: 5px;
+        border-radius: 4px;
+    }
+    a {
+        color: #5D5C61;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    .btn {
+        padding: 10px 20px;
+        background-color: #007BFF;
+        color: white;
+        text-align: center;
+        display: inline-block;
+        border-radius: 5px;
+        text-decoration: none;
+        margin-top: 20px;
+    }
+    .btn:hover {
+        background-color: #0056b3;
+    }
+    .no-orders {
+        text-align: center;
+        font-size: 16px;
+        color: #666;
+    }
+</style>
+
+<div class="container">
+    <h1>Order History</h1>
+    {% if orders %}
+        <ul>
+            {% for order in orders %}
+            <li>
+                <strong>{{ order.product.name }}</strong> - Quantity: {{ order.quantity }} - Price: ${{ order.price }} on {{ order.date|date:"M d, Y" }}
+                <a href="{% url 'order-details' pk=order.pk %}" class="btn">Update/Delete Order</a>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="no-orders">You have no order history.</p>
+    {% endif %}
+    <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+</div>
 {% endblock %}

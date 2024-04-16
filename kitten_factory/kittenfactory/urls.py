@@ -3,7 +3,7 @@ from . import views
 from .views import Home, ProductListCreateAPIView, ProductRetrieveUpdateDestroyAPIView, EmployeeListCreateAPIView, Home
 from .views import EmployeeRetrieveUpdateDestroyAPIView, CustomerListCreateAPIView, CustomerRetrieveUpdateDestroyAPIView 
 from .views import OrderListCreateAPIView, OrderRetrieveUpdateDestroyAPIView, ReturnListCreateAPIView, ReturnRetrieveUpdateDestroyAPIView
-from .views import RawMaterialListCreateAPIView, RawMaterialRetrieveUpdateDestroyAPIView, product_list, order_detail_view
+from .views import RawMaterialListCreateAPIView, RawMaterialRetrieveUpdateDestroyAPIView, product_list, OrderHistoryView
 from .views import SalesReportListCreateAPIView, SalesReportRetrieveUpdateDestroyAPIView, submit_customer_return, OrderUpdateDeleteView
 from django.contrib.auth import views as auth_views
 
@@ -27,11 +27,10 @@ urlpatterns = [
     path('contact/', views.Home.contact_view, name='contact'),
     path('contact/submit/', Home.contact_submit, name='contact-submit'),
     path('submit_return/', submit_customer_return, name='submit-return'),
-    path('order_history/', views.order_history_view, name='order_history'),
+    path('order_history/', OrderHistoryView.as_view(), name='order_history'),
     path('order-form/', views.order_product_view, name='order-form'),
     path('products/', product_list, name='product-list'),
-    path('order/<int:pk>/', order_detail_view, name='order-details'),
-    path('order/<int:pk>/edit/', OrderUpdateDeleteView.as_view(), name='order-update-delete'),
+    path('order/<int:pk>/edit', OrderUpdateDeleteView.as_view(), name='order-details')
 ]
 
 

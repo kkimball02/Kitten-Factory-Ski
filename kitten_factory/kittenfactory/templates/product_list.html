@@ -1,3 +1,56 @@
+{% block content %}
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 20px;
+        background-color: #f4f4f9;
+        color: #333;
+    }
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+    .table {
+        width: 80%;
+        margin: 20px auto;
+        border-collapse: collapse;
+    }
+    .table th, .table td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+    thead {
+        background-color: #007BFF;
+        color: #ffffff;
+    }
+    tbody tr:nth-child(odd) {
+        background-color: #f9f9f9;
+    }
+    tbody tr:nth-child(even) {
+        background-color: #ffffff;
+    }
+    a {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        text-align: center;
+    }
+    a:hover {
+        background-color: #0056b3;
+    }
+    .btn-secondary {
+        background-color: #007BFF;
+    }
+    .btn-secondary:hover {
+        background-color: #0056b3;
+    }
+</style>
+
 <h1>Product Listing</h1>
 {% if products %}
     <table class="table">
@@ -20,15 +73,9 @@
             {% endfor %}
         </tbody>
     </table>
-<<<<<<< HEAD
-    <a href="{% url 'order-form' %}"> Order Products </a>
-    
-=======
-    <a href="{% url 'order-form' %}" class="btn btn-primary">Order Products</a>
-    <br><br> 
+    <a href="{% url 'order-form' %}">Order Products</a>
     <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
->>>>>>> 999928c0b413efaa21a0eb4d017fb50c01bd5659
 {% else %}
     <p>No products available.</p>
-    <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
 {% endif %}
+{% endblock %}

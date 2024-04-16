@@ -1,9 +1,66 @@
 {% block content %}
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Register</button>
-    <br><br> 
-    <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
-</form>
+<style>
+    .registration-form {
+        background-color: #f4f4f9; /* Light blue background */
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+        max-width: 400px;
+        margin: 50px auto;
+    }
+    h2 {
+        color: #205081; /* Dark blue for a strong, professional headline */
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    .btn-primary {
+        background-color: #337ab7; /* Bootstrap primary blue */
+        border-color: #2e6da4;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%; /* Full-width button for more emphasis */
+        margin-bottom: 10px; /* Spacing between the button and the link */
+    }
+    .btn-primary:hover {
+        background-color: #286090; /* Darker blue on hover */
+        border-color: #204d74;
+    }
+    .btn-secondary {
+        background-color: #6c757d; /* Bootstrap secondary gray */
+        border-color: #5a6268;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        width: 100%; /* Full-width to match the primary button */
+    }
+    .btn-secondary:hover {
+        background-color: #5a6268; /* Darker gray on hover */
+        border-color: #545b62;
+    }
+    input[type="text"],
+    input[type="password"],
+    textarea {
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-bottom: 15px; /* Spacing between form inputs */
+        padding: 10px;
+        width: 100%; /* Full width for better user experience */
+    }
+</style>
+
+<div class="registration-form">
+    <h2>Register</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Register</button>
+        <br><br>
+    </form>
+</div>
 {% endblock %}

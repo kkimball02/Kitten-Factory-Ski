@@ -11,9 +11,10 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 import requests
-from django.views.generic import UpdateView
-from django.urls import reverse_lazy
+from django.views.generic import UpdateView, ListView
+from django.urls import reverse_lazy, reverse
 
 
 
@@ -109,31 +110,20 @@ class OrderListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
 
-def order_detail_view(request, pk):
-    try:
-        # Ensure the order exists and belongs to the user
-        order = Order.objects.get(pk=pk, customer__user=request.user)
-    except Order.DoesNotExist:
-        # If the order does not exist or does not belong to the user, handle the error
-        return HttpResponse('Order not found or access denied.', status=404)
-
-    # Proceed with rendering if the order is valid
-    return render(request, 'delete_order.html', {'order': order})
 
 
 
-@login_required
-def order_history_view(request):
-    if not request.user.is_authenticated:
-        return redirect('login_url')  # Ensure the user is redirected if not logged in
 
-    try:
-        # Assuming Order has a foreign key to Customer which in turn is linked to User
-        orders = Order.objects.filter(customer__user=request.user).order_by('-date')
-        return render(request, 'order_history.html', {'orders': orders})
-    except Order.DoesNotExist:
-        orders = None
-    return render(request, 'order_history.html', {'orders': orders})
+@method_decorator(login_required, name='dispatch')
+class OrderHistoryView(ListView):
+    model = Order
+    template_name = 'order_history.html'
+    context_object_name = 'orders'
+
+    def get_queryset(self):
+        customer = Customer.objects.get(user=self.request.user)
+        return Order.objects.filter(customer=customer)
+        # Adjust the query to match how you identify orders (e.g., by user
 
 def order_product_view(request):
     if request.method == 'POST':
@@ -155,22 +145,27 @@ def order_product_view(request):
         form = OrderForm()
 
     return render(request, 'order_form.html', {'form': form})
-
 class OrderUpdateDeleteView(UpdateView):
     model = Order
     form_class = OrderForm
-    template_name = 'order/update_order.html'
-    success_url = reverse_lazy('order-list')
-
+    template_name = 'delete_order.html'
+    success_url = reverse_lazy('order_history')
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if "delete" in request.POST:
-            return self.delete_order()
-        return super().post(request, *args, **kwargs)
+        if 'delete' in request.POST:
+            self.object.delete()
+            return redirect('order_history')
+        else:  # Handle update
+            response = super().post(request, *args, **kwargs)
+            if self.form_valid(self.get_form()):
+                return redirect('order_history')
+            else:
+                return response
 
-    def delete_order(self):
-        self.object.delete()
-        return redirect('order_history')
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+    
 class OrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer

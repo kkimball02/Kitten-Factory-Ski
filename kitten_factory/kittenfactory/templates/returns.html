@@ -1,10 +1,58 @@
 {% block content %}
-<h2>Submit Customer Return</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-<br> 
-<a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 20px;
+        background-color: #e7f0f7; /* Light blue background */
+    }
+    .container {
+        width: 80%;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ffffff; /* White background for content */
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    h2 {
+        color: #205081; /* Dark blue for headings */
+        text-align: center;
+    }
+    form {
+        margin-top: 20px;
+        padding: 20px;
+        background-color: #f4f4f9; /* Very light blue background for the form */
+        border: 1px solid #d3e2f4; /* Light blue border */
+        border-radius: 5px;
+    }
+    .btn-primary {
+        background-color: #337ab7; /* Bootstrap primary blue */
+        border-color: #2e6da4;
+        color: white; /* White text */
+    }
+    .btn-primary:hover {
+        background-color: #286090; /* Darker blue on hover */
+        border-color: #204d74;
+    }
+    .btn-secondary {
+        background-color: #6c757d; /* Bootstrap secondary grey */
+        border-color: #5a6268;
+        color: white; /* White text */
+    }
+    .btn-secondary:hover {
+        background-color: #5a6268; /* Darker grey on hover */
+        border-color: #545b62;
+    }
+</style>
+
+<div class="container">
+    <h2>Submit Customer Return</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <br> 
+    <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+</div>
+
 {% endblock %}
